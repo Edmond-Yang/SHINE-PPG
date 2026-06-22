@@ -22,11 +22,11 @@ where **I** is the observed image, **L** is illumination, **R** is reflectance, 
 
 The model consists of three branches, each built from shared 3D convolutional encoder–decoder components:
 
-| Branch | Model | Role |
-|--------|-------|------|
-| Illumination | `IlluminationModel` | Predicts per-frame illumination map **L** |
-| Specular | `IlluminationModel` | Predicts specular highlight map **H** |
-| Reflectance | `ReflectanceModel` | Predicts reflectance map **R** and rPPG signal |
+| Branch | Role |
+|--------|------|
+| Illumination | Predicts per-frame illumination map **L** |
+| Specular |  Predicts specular highlight map **H** |
+| Reflectance | Predicts reflectance map **R** and rPPG signal |
 
 ---
 
@@ -40,8 +40,6 @@ Training proceeds in four progressive stages:
 | 2 | 21 – 40 | Specular only | Specular Isolation |
 | 3 | 41 – 60 | All three branches | Joint Refinement |
 | 4 | 61 – 100 | All + AdaIN adversary | Adversarial Enhancement |
-
-In Stage 4, an AdaIN-based perturbation is applied to the predicted illumination map to generate out-of-distribution (OOD) samples. The adversary maximizes rPPG loss to expose hard cases; the main network is then trained to be robust against them.
 
 ---
 
@@ -70,35 +68,3 @@ SHINE-PPG/
 ├── template.py       # ModelTemplate base class — train/inference modes
 └── params.yaml       # Default hyperparameters
 ```
-
----
-
-## Configuration
-
-Default parameters in `params.yaml`:
-
-```yaml
-size: 64        # Spatial crop size
-epoch: 100      # Total training epochs
-max_gpu_mem: 41 # GPU memory limit (GB)
-augmentation:
-  enable: True
-modalities: ["rgb_face", "gt"]
-```
-
----
-
-## Dependencies
-
-- Python 3.10+
-- PyTorch
-- einops
-- thop
-- matplotlib
-- numpy
-
----
-
-## Citation
-
-If you use this code, please cite the corresponding paper.
