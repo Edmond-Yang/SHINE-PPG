@@ -1,12 +1,16 @@
 # SHINE-PPG: Non-Lambertian Intrinsic Decomposition for Illumination-Robust rPPG [ECCV 26]
 
-**SHINE-PPG** is a deep learning framework for remote photoplethysmography (rPPG) that estimates heart rate from facial videos via **intrinsic image decomposition**. It disentangles a face video into illumination, reflectance, and specular components, then extracts the rPPG signal from the reflectance branch — making the signal estimation robust to lighting variation and specular highlights.
+Remote photoplethysmography (rPPG) enables non-contact physiological monitoring by capturing subtle skin color variations induced by cardiac cycles. Despite its promise, rPPG remains highly sensitive to environmental illumination.
+
+Existing illumination-aware methods suffer from two key limitations: (1) limited out-of-distribution (OOD) generalization due to domain discrepancies between training and testing data, and (2) reliance on the Lambertian assumption, which neglects non-Lambertian specular highlights that frequently corrupt facial skin signals.
+
+We propose **SHINE-PPG** (Specular-Highlight Intrinsic Network for rPPG Estimation), a novel framework that leverages non-Lambertian intrinsic decomposition to decouple facial videos into illumination, reflectance, and specular components in a self-supervised manner. By isolating physiological information within the intrinsic reflectance, our method effectively suppresses both ambient lighting variations and surface highlights to recover high-fidelity rPPG signals. To further enhance robustness, we introduce an adversarial illumination enhancement strategy that dynamically synthesizes challenging unseen lighting conditions during training, significantly improving OOD generalization. Extensive experiments on five benchmark datasets demonstrate that SHINE-PPG consistently outperforms previous methods, particularly under complex and dynamic illumination scenarios.
 
 ---
 
 ## Method Overview
 
-SHINE-PPG decomposes each video frame according to the Lambertian model:
+SHINE-PPG decomposes each video frame according to the non-Lambertian model:
 
 ```
 I = L · R + H
