@@ -1,0 +1,5 @@
+size: 64
+epoch: 100
+max_gpu_mem: 41
+augmentation: {"enable": True}
+modalities: ["rgb_face", "gt"]
